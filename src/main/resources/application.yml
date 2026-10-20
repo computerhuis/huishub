@@ -1,0 +1,104 @@
+#  https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+spring:
+  jmx:
+    enabled: false
+  main:
+    banner-mode: OFF
+  lifecycle:
+    timeout-per-shutdown-phase: 1s
+
+  # ====================================================================================================================
+  # = MULTIPART UPLOAD
+  # ====================================================================================================================
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # ====================================================================================================================
+  # = DATA SOURCE
+  # ====================================================================================================================
+  datasource:
+    url: jdbc:mariadb://${DATABASE_HOST}:3306/${DATABASE_NAME}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      poolName: hikari-pool-dco
+
+  # ====================================================================================================================
+  # = JPA
+  # ====================================================================================================================
+  jpa:
+    open-in-view: false
+    properties:
+      hbm2ddl:
+        auto: validate
+
+      # ================================================================================================================
+      # = HIBERNATE
+      # ================================================================================================================
+      hibernate:
+        show_sql: false
+        use_sql_comments: false
+        format_sql: false
+        jdbc:
+          time_zone: Europe/Amsterdam
+          use_get_generated_keys: true
+          lob:
+            non_contextual_creation: true
+
+  # ====================================================================================================================
+  # = WEB
+  # ====================================================================================================================
+  web:
+    locale: nl
+
+  # ====================================================================================================================
+  # = VIRTUAL THREADS
+  # ====================================================================================================================
+  threads:
+    virtual:
+      enabled: true
+
+# ======================================================================================================================
+# = SERVER - INCLUDE AN ERROR MESSAGE JSON
+# ======================================================================================================================
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: "base64:${KEY_STORE_DATA}"
+    key-store-password: "${KEY_STORE_PASSWORD}"
+    keyStoreType: "PKCS12"
+    keyAlias: "springboot"
+  servlet:
+    session:
+      timeout: 43200 # (timeout 12 hr)
+
+# ======================================================================================================================
+# = JOINFACES
+# https://docs.joinfaces.org/current/reference/#properties
+# ======================================================================================================================
+joinfaces:
+  faces:
+    interpret-empty-string-submitted-values-as-null: true
+    project-stage: production
+  primefaces:
+    THEME: saga
+    FONT_AWESOME: true
+    CSP: true
+
+# ======================================================================================================================
+# = LOGGING
+# ======================================================================================================================
+logging:
+  pattern:
+    console: '%date [%highlight(%-5level)] [%thread] [%cyan(%logger:%line)] -%mdc{RID} %message%n'
+  level:
+    root: INFO
+    org:
+      codeberg:
+        computerhuis:
+          portaal: DEBUG

@@ -1,0 +1,28 @@
+# OS
+Thumbs.db
+.DS_Store
+
+# IntelliJ
+*.iml
+.idea/
+
+# OpenChamber
+/.openchamber/
+
+# Maven
+target/
+release.properties
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+*.class
+*.info
+tree.txt
+analyze.txt
+
+# Project
+/access/
+/config/
+*.tar
+*.log
+.env
+_env
