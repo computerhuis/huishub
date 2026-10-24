@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Invoeren</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="In/Uit"/>
+        <p:menuitem value="Invoeren"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>Invoeren</h1>
+        <hr/>
+
+        <p:wizard flowListener="#{inputWizardBean.onFlowProcess}"
+                  widgetVar="inportwizard"
+                  nextLabel="Volgende"
+                  backLabel="Vorige">
+            <p:tab id="step1" title="Kies bestandindeling">
+                <p:focus context="@next"/>
+                <p:panel header="Kies bestandindeling">
+                    <p:messages/>
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Bestand indeling: *"/>
+                        <p:selectOneMenu value="#{inputWizardBean.importType}" required="true" label="Bestand indeling">
+                            <f:selectItem itemLabel="Kies type" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Digidromen - Stichting Leergeld" itemValue="DIGIDROMEN_LEERGELD"/>
+                            <f:selectItem itemLabel="Gezinnen - Stichting Leergeld" itemValue="GEZINNEN_LEERGELD"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="step2" title="Laad bestand">
+                <p:focus context="@next"/>
+                <p:panel header="Laad bestand">
+                    <p:messages/>
+                    <h:panelGrid columns="2" columnClasses="label, value">
+                        <h:outputText value="Bestand: *"/>
+                        <p:fileUpload mode="simple"
+                                      skinSimple="true"
+                                      multiple="true"
+                                      auto="true"
+                                      process="@this"
+                                      label="Inladen"
+                                      oncomplete="PF('inportwizard').next();"
+                                      listener="#{inputWizardBean.importFile}"/>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="step3" title="Te importeren">
+                <p:focus context="@next"/>
+                <p:panel header="Te importeren">
+
+                    <ui:fragment rendered="#{inputWizardBean.digidromenLeergeld}">
+                        <ul class="mb-2">
+                            <ui:repeat value="#{inputWizardBean.serialNumberList.keySet()}" var="serialNumber">
+                                <li>#{serialNumber}</li>
+                            </ui:repeat>
+                        </ul>
+                        Klik op "volgende" om deze lijst te importeren!
+                    </ui:fragment>
+                </p:panel>
+            </p:tab>
+
+            <p:tab id="confirm" title="Resultaat">
+                <p:panel header="Resultaat">
+                    <ui:fragment rendered="#{inputWizardBean.digidromenLeergeld}">
+                        <ul class="mb-2">
+                            <p:dataTable id="serialNumbers"
+                                         var="serialNumber"
+                                         value="#{inputWizardBean.serialNumberList}"
+                                         rowKey="#{serialNumber.key}"
+                                         rowStyleClass="#{serialNumber.value ? 'success-row' : !serialNumber.value ? 'warn-row' :'error-row'}">
+                                <p:column headerText="Serie nummer">
+                                    <h:outputText value="#{serialNumber.key}"/>
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <ui:fragment rendered="#{serialNumber.value == null}">
+                                        <i class="pi pi-times-circle text-danger-color"></i>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{serialNumber.value}">
+                                        <i class="pi pi-check-circle text-succes-color"></i>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{!serialNumber.value}">
+                                        <i class="pi pi-exclamation-triangle text-warning-color"></i>
+                                    </ui:fragment>
+                                </p:column>
+                            </p:dataTable>
+                        </ul>
+                    </ui:fragment>
+                </p:panel>
+            </p:tab>
+        </p:wizard>
+
+    </ui:define>
+
+</ui:composition>
+</html>

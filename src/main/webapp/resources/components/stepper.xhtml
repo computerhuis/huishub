@@ -1,0 +1,28 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+              xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <cc:interface>
+        <cc:attribute name="steps" required="true"/>
+        <cc:attribute name="currentStep" required="true" type="java.lang.Integer"/>
+    </cc:interface>
+
+    <cc:implementation>
+        <div class="stepper d-flex align-items-center justify-content-between">
+            <ui:repeat value="#{cc.attrs.steps}" var="step" varStatus="status">
+                <div class="step #{status.index lt cc.attrs.currentStep ? 'active' : ''}">
+                    <div class="circle">
+                        #{status.index + 1}
+                    </div>
+                    <div class="label">
+                        #{step}
+                    </div>
+                </div>
+                <ui:fragment rendered="#{!status.last}">
+                    <div class="line #{status.index + 1 lt cc.attrs.currentStep ? 'active' : ''}"></div>
+                </ui:fragment>
+            </ui:repeat>
+        </div>
+        <hr class="mb-5"/>
+    </cc:implementation>
+</ui:component>

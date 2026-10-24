@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="id" value="#{equipmentHistoryBean.id}"/>
+    <f:event type="preRenderView" listener="#{equipmentHistoryBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Apparatuur Geschiendenis</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Apparatuur" outcome="/dataset/equipment/list"/>
+        <p:menuitem value="#{equipmentHistoryBean.id != null ? equipmentHistoryBean.id : 'Nieuw'}"/>
+        <p:menuitem value="Geschiedenis"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:dataTable
+            id="historyList"
+            var="history"
+            value="#{equipmentHistoryBean.list}"
+            rows="10"
+            paginator="true"
+            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+            paginatorPosition="bottom">
+
+            <p:column headerText="#" sortBy="#{history.ticketId}" sortOrder="desc">
+                <p:linkButton outcome="/dataset/ticket/crud" icon="pi pi-search"
+                              styleClass="rounded-button ui-button-outlined ui-button-raised ">
+                    <f:param name="id" value="#{history.ticketId}"/>
+                </p:linkButton>
+                <h:outputText value="#{history.ticketId}" styleClass="ml-2"/>
+            </p:column>
+            <p:column headerText="Geopend">
+                <h:outputText value="#{history.registered != null ? history.registered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Type">
+                <h:outputText value="#{history.ticketType.label}"/>
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{history.status.label}"/>
+            </p:column>
+            <p:column headerText="Behandelaar">
+                <h:outputText value="#{history.fullName}"/>
+            </p:column>
+            <p:column headerText="Omschrijving">
+                <h:outputText value="#{history.subject}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
+</html>

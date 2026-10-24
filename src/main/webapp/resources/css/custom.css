@@ -1,0 +1,96 @@
+@font-face {
+    font-family: 'RO Sans';
+    font-weight: normal;
+    font-style: normal;
+    src: url('#{resource["fonts/RO-SansWebText-Regular.woff2"]}') format('woff2');
+}
+
+@font-face {
+    font-family: 'RO Sans';
+    font-weight: normal;
+    font-style: italic;
+    src: url('#{resource["fonts/RO-SansWebText-Italic.woff2"]}') format('woff2');
+}
+
+@font-face {
+    font-family: 'RO Sans';
+    font-weight: bold;
+    font-style: normal;
+    src: url('#{resource["fonts/RO-SansWebText-Bold.woff2"]}') format('woff2');
+}
+
+* {
+    font-family: 'RO Sans', sans-serif;
+}
+
+.success-row {
+    background-color: #dff0d8 !important;
+}
+
+.warn-row {
+    background-color: #fcf8e3 !important;
+}
+
+.error-row {
+    background-color: #f2dede !important;
+}
+
+.stepper {
+    width: 100%;
+    margin: 30px 0;
+    display: flex;
+    align-items: center;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    min-width: 80px;
+}
+
+.circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.label {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Actieve / voltooide stap */
+.step.active .circle {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+/* Lijn tussen stappen */
+.line {
+    flex: 1;
+    height: 4px;
+    background-color: #dee2e6;
+    margin: 0 10px;
+    position: relative;
+    top: -10px; /* zorgt dat lijn mooi door midden van cirkel loopt */
+}
+
+/* Actieve lijn */
+.line.active {
+    background-color: #0d6efd;
+}
+
+.valign-top {
+    vertical-align: top !important;
+}

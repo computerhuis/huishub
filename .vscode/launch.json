@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot [huishub]",
+            "request": "launch",
+            "mainClass": "com.github.computerhuis.huishub.Application",
+            "projectName": "huishub",
+            "cwd": "${workspaceFolder}",
+            "args": [],
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env.local"
+        }
+    ]
+}

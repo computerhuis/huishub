@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+    <h:head>
+        <title><ui:insert name="title"/> | Werkgroep Computerhuis Oost</title>
+        <h:outputStylesheet name="css/primeflex.min.css" defer="true"/>
+        <h:outputScript name="locales/locale-nl.js" library="primefaces" defer="true"/>
+        <h:outputStylesheet name="custom.css" library="css" defer="true"/>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="#{resource['icons/apple-touch-icon.png']}"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="#{resource['icons/favicon-32x32.png']}"/>
+        <link rel="icon" type="image/png" sizes="16x16" href="#{resource['icons/favicon-16x16.png']}"/>
+    </h:head>
+    <h:body styleClass="surface-ground p-3">
+        <p:card styleClass="mb-5">
+            <h:form id="menubar">
+                <p:menubar orientation="horizontal" autoDisplay="false">
+
+                    <f:facet name="start">
+                        <h:link outcome="/index">
+                            <p:graphicImage name="images/logo-ct.png"/>
+                        </h:link>
+                    </f:facet>
+
+                    <p:divider layout="vertical" styleClass="ml-3"/>
+                    <p:menuitem value="Werkplaats" outcome="/werkplaats/list" icon="pi pi-fw pi-wrench"/>
+                    <p:divider layout="vertical" styleClass="ml-3"/>
+                    <p:menuitem value="Balie" outcome="/balie" icon="pi pi-fw pi-users"/>
+                    <p:divider layout="vertical" styleClass="ml-3"/>
+                    <p:menuitem value="Educatie" outcome="/educatie" icon="pi pi-fw pi-video"/>
+                    <p:divider layout="vertical" styleClass="ml-3"/>
+
+                    <p:submenu label="In/Uit" icon="pi pi-fw pi-arrow-right-arrow-left">
+                        <p:menuitem value="Invoeren" outcome="/inuit/invoeren" icon="pi pi-fw pi-arrow-right"/>
+                        <p:menuitem value="Uitgave" outcome="/inuit/uitgave" icon="pi pi-fw pi-arrow-left"/>
+                    </p:submenu>
+                    <p:divider layout="vertical" styleClass="ml-3"/>
+
+                    <p:submenu label="Data Set" icon="pi pi-fw pi-database">
+                        <p:submenu label="Ticket" icon="pi pi-fw pi-ticket">
+                            <p:menuitem value="Overzicht" outcome="/dataset/ticket/list"/>
+                            <p:menuitem value="Invoeren" outcome="/dataset/ticket/crud"/>
+                        </p:submenu>
+                        <p:submenu label="Apparatuur" icon="pi pi-fw pi-shopping-cart">
+                            <p:menuitem value="Overzicht" outcome="/dataset/equipment/list"/>
+                            <p:menuitem value="Voorraad" outcome="/dataset/equipment/stock"/>
+                            <p:menuitem value="Invoeren" outcome="/dataset/equipment/crud"/>
+                        </p:submenu>
+                        <p:submenu label="Personen" icon="pi pi-fw pi-users">
+                            <p:menuitem value="Overzicht" outcome="/dataset/person/list"/>
+                            <p:menuitem value="Invoeren" outcome="/dataset/person/crud"/>
+                            <p:divider layout="horizontal"/>
+                            <p:menuitem value="Tijdregistratie" outcome="/dataset/person/timesheet/list"/>
+                        </p:submenu>
+                        <p:submenu label="Donateurs" icon="pi pi-fw pi-building">
+                            <p:menuitem value="Overzicht" outcome="/dataset/donor/list"/>
+                            <p:menuitem value="Invoeren" outcome="/dataset/donor/crud"/>
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:divider layout="vertical"/>
+                    <p:submenu label="Rapportage" icon="pi pi-fw pi-chart-line">
+                        <p:menuitem value="Uitgiftbewijzen" outcome="/reports/proofofissue/list"/>
+                    </p:submenu>
+                    <p:divider layout="vertical"/>
+                    <p:submenu label="Instellingen" icon="pi pi-fw pi-cog">
+                        <p:menuitem value="Postcode" outcome="/settings/postal/list"/>
+                        <p:menuitem value="Vrijwilligers" outcome="/settings/volunteer/list"/>
+                    </p:submenu>
+
+                    <f:facet name="end">
+                        <p:button icon="pi pi-power-off" outcome="/logout.faces"
+                                  styleClass="rounded-button ui-button-outlined"/>
+                    </f:facet>
+                </p:menubar>
+            </h:form>
+
+            <h:form id="breadcrumb">
+                <p:breadCrumb styleClass="border-none">
+                    <ui:insert name="breadcrumb"/>
+                </p:breadCrumb>
+            </h:form>
+
+            <h:form id="content">
+                <p:growl id="growl" showDetail="true"/>
+                <ui:insert name="content"/>
+            </h:form>
+
+            <div class="text-center mt-5">
+                <p:outputLabel escape="false" value="&#169; 2020-"/>
+                <h:outputText value="#{session.lastAccessedTime}">
+                    <f:convertDateTime pattern="yyyy" type="date"/>
+                </h:outputText>
+                <p:outputLabel escape="false" value=", Werkgroep Computerhuis Oost"/>
+            </div>
+        </p:card>
+
+    </h:body>
+</f:view>
+</html>

@@ -6,6 +6,11 @@ Thumbs.db
 *.iml
 .idea/
 
+# Environment variables
+.env
+.env.*
+!.env.example
+
 # OpenChamber
 /.openchamber/
 
@@ -24,5 +29,3 @@ analyze.txt
 /config/
 *.tar
 *.log
-.env
-_env

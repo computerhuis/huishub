@@ -1,0 +1,10 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true,
+    "search.exclude": {
+        "**/.env": true,
+        "**/.env.*": true
+    },
+    "search.useIgnoreFiles": true
+}

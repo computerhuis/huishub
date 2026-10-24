@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Tijdregistratie</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Personen" outcome="/dataset/person/list"/>
+        <p:menuitem value="Tijdregistratie"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:dataTable
+            id="timesheetList"
+            var="timesheet"
+            value="#{timesheetListBean.list}"
+            rows="10"
+            paginator="true"
+            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+            paginatorPosition="bottom">
+
+            <p:column headerText="Persoon" sortBy="#{timesheet.personId}" sortOrder="desc">
+                <p:linkButton outcome="/dataset/person/timesheet/crud" icon="pi pi-search"
+                              styleClass="rounded-button ui-button-outlined ui-button-raised ">
+                    <f:param name="personId" value="#{timesheet.personId}"/>
+                </p:linkButton>
+                <h:outputText value="#{timesheet.fullname}" styleClass="ml-2"/>
+            </p:column>
+            <p:column headerText="Activiteit">
+                <h:outputText value="#{timesheet.activityId}"/>
+            </p:column>
+            <p:column headerText="Inschrijf datum">
+                <h:outputText value="#{timesheet.registered != null ? timesheet.registered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Uitgeschreven datum">
+                <h:outputText value="#{timesheet.unregistered != null ? timesheet.unregistered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>
+
+</html>

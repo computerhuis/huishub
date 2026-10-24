@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:my="http://xmlns.jcp.org/jsf/composite/components">
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Nieuwe intake</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home" outcome="/index"/>
+        <p:menuitem value="Werkplaats" outcome="/werkplaats/list"/>
+        <p:menuitem value="Nieuwe intake"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>Nieuwe intake</h1>
+        <hr/>
+
+        <my:stepper
+            steps="#{newWizardBean.steps}"
+            currentStep="#{newWizardBean.currentStep}"/>
+
+        <!-- Stap 1: Klant gegevens -->
+        <ui:fragment rendered="#{newWizardBean.currentStep eq 1}">
+            <p:panel header="Klant gegevens">
+
+                <div class="grid ui-fluid">
+                    <div class="col-12 md:col-4">
+                        <p:outputLabel for="voornaam" value="Voornaam" styleClass="block mb-2"/>
+                        <p:inputText id="voornaam" value="#{newWizardBean.voornaam}" styleClass="w-full"/>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <p:outputLabel for="achternaam" value="Achternaam" styleClass="block mb-2"/>
+                        <p:inputText id="achternaam" value="#{newWizardBean.achternaam}" styleClass="w-full"/>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <div class="flex gap-2 mt-2 md:mt-4">
+                            <p:commandButton value="Zoeken"
+                                             icon="pi pi-search"
+                                             action="#{newWizardBean.zoek}"
+                                             update="@form"
+                                             styleClass="ui-button-raised"/>
+                            <p:commandButton value="Nieuwe klant"
+                                             icon="pi pi-user-plus"
+                                             action="#{newWizardBean.nieuweKlant}"
+                                             update="@form"
+                                             styleClass="ui-button-raised ui-button-outlined"/>
+                        </div>
+                    </div>
+                </div>
+
+                <p:dataTable id="resultaten"
+                             value="#{newWizardBean.resultaten}"
+                             var="klant"
+                             rows="5"
+                             paginator="true"
+                             emptyMessage="Geen klanten gevonden"
+                             rendered="#{not empty newWizardBean.resultaten}">
+                    <p:column headerText="Voornaam">#{klant.firstName}</p:column>
+                    <p:column headerText="Tussenvoegsels">#{klant.infix}</p:column>
+                    <p:column headerText="Achternaam">#{klant.lastName}</p:column>
+                    <p:column headerText="Woonplaats">#{klant.city}</p:column>
+                    <p:column styleClass="w-1">
+                        <p:commandButton icon="pi pi-arrow-right"
+                                         title="Deze klant kiezen"
+                                         action="#{newWizardBean.selecteer(klant)}"
+                                         update="@form"
+                                         styleClass="ui-button-raised"/>
+                    </p:column>
+                </p:dataTable>
+
+                <ui:fragment rendered="#{newWizardBean.person ne null}">
+                    <h2>Klantgegevens</h2>
+                    <p:panelGrid columns="2" columnClasses="label, value">
+                        <p:outputLabel for="firstname" value="Voornaam"/>
+                        <p:inputText id="firstname" value="#{newWizardBean.person.firstName}" required="true"/>
+
+                        <p:outputLabel for="infix" value="Tussenvoegsels"/>
+                        <p:inputText id="infix" value="#{newWizardBean.person.infix}"/>
+
+                        <p:outputLabel for="lastname" value="Achternaam"/>
+                        <p:inputText id="lastname" value="#{newWizardBean.person.lastName}" required="true"/>
+
+                        <p:outputLabel for="telephone" value="Telefoon"/>
+                        <p:inputText id="telephone" value="#{newWizardBean.person.telephone}"/>
+
+                        <p:outputLabel for="mobile" value="Mobiel"/>
+                        <p:inputText id="mobile" value="#{newWizardBean.person.mobile}"/>
+
+                        <p:outputLabel for="email" value="E-mailadres"/>
+                        <p:inputText id="email" value="#{newWizardBean.person.email}"/>
+
+                        <p:outputLabel for="street" value="Straat"/>
+                        <p:inputText id="street" value="#{newWizardBean.person.street}"/>
+
+                        <p:outputLabel for="house_number" value="Huisnummer"/>
+                        <p:inputText id="house_number" value="#{newWizardBean.person.houseNumber}"/>
+
+                        <p:outputLabel for="house_number_addition" value="Toevoeging"/>
+                        <p:inputText id="house_number_addition" value="#{newWizardBean.person.houseNumberAddition}"/>
+
+                        <p:outputLabel for="postal_code" value="Postcode"/>
+                        <p:inputText id="postal_code" value="#{newWizardBean.person.postalCode}"/>
+
+                        <p:outputLabel for="city" value="Woonplaats"/>
+                        <p:inputText id="city" value="#{newWizardBean.person.city}"/>
+                    </p:panelGrid>
+                </ui:fragment>
+            </p:panel>
+        </ui:fragment>
+
+        <!-- Stap 2: Apparaat gegevens -->
+        <ui:fragment rendered="#{newWizardBean.currentStep eq 2}">
+            <p:panel header="Apparaat gegevens">
+                <p:panelGrid columns="2" columnClasses="label, value">
+                    <p:outputLabel for="category" value="Type kast"/>
+                    <p:selectOneMenu id="category" value="#{newWizardBean.equipment.category}" required="true">
+                        <f:selectItems value="#{newWizardBean.equipmentCategories}"
+                                       var="category"
+                                       itemValue="#{category}"
+                                       itemLabel="#{category.label}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="manufacturer" value="Fabrikant"/>
+                    <p:inputText id="manufacturer" value="#{newWizardBean.equipment.manufacturer}" required="true"/>
+
+                    <p:outputLabel for="model" value="Model nummer"/>
+                    <p:inputText id="model" value="#{newWizardBean.equipment.model}" required="true"/>
+
+                    <p:outputLabel for="serial_number" value="Serienummer"/>
+                    <p:inputText id="serial_number" value="#{newWizardBean.equipment.serialNumber}"/>
+                </p:panelGrid>
+
+                <h2>Specificaties</h2>
+                <div class="grid ui-fluid">
+                    <ui:repeat value="#{newWizardBean.equipmentSpecificationKeys}" var="key">
+                        <div class="col-12 md:col-6">
+                            <p:outputLabel value="#{key}" styleClass="block mb-2"/>
+                            <p:inputText value="#{newWizardBean.equipment.specification[key]}"
+                                         styleClass="w-full"/>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </p:panel>
+        </ui:fragment>
+
+        <!-- Stap 3: Omschrijf werkzaamheden -->
+        <ui:fragment rendered="#{newWizardBean.currentStep eq 3}">
+            <p:panel header="Omschrijf werkzaamheden">
+                <p:panelGrid columns="2" columnClasses="label, value">
+                    <p:outputLabel for="ticket_type" value="Type"/>
+                    <p:selectOneMenu id="ticket_type" value="#{newWizardBean.ticket.ticketType}" required="true">
+                        <f:selectItems value="#{newWizardBean.ticketTypes}"
+                                       var="type"
+                                       itemValue="#{type}"
+                                       itemLabel="#{type.label}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="subject" value="Onderwerp"/>
+                    <p:inputText id="subject" value="#{newWizardBean.ticket.subject}"/>
+
+                    <p:outputLabel for="description" value="Omschrijving"/>
+                    <p:inputTextarea id="description"
+                                     rows="5"
+                                     value="#{newWizardBean.ticket.description}"
+                                     required="true"/>
+                </p:panelGrid>
+
+                <div class="grid ui-fluid">
+                    <ui:repeat value="#{newWizardBean.ticketDetailKeys}" var="key">
+                        <div class="col-12 md:col-6">
+                            <p:outputLabel value="#{key}" styleClass="block mb-2"/>
+                            <p:inputTextarea rows="2"
+                                             value="#{newWizardBean.ticket.details[key]}"
+                                             styleClass="w-full"/>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </p:panel>
+        </ui:fragment>
+
+        <div class="flex justify-content-end gap-2 mt-4">
+            <p:commandButton value="Annuleren"
+                             icon="pi pi-times"
+                             action="#{newWizardBean.annuleren}"
+                             immediate="true"
+                             styleClass="ui-button-raised ui-button-outlined"/>
+            <p:commandButton value="Vorige"
+                             icon="pi pi-arrow-left"
+                             action="#{newWizardBean.vorige}"
+                             update="@form"
+                             rendered="#{newWizardBean.currentStep gt 1}"
+                             styleClass="ui-button-raised ui-button-outlined"/>
+            <p:commandButton value="Volgende"
+                             icon="pi pi-arrow-right"
+                             iconPos="right"
+                             action="#{newWizardBean.volgende}"
+                             update="@form"
+                             rendered="#{newWizardBean.currentStep lt 3 and (newWizardBean.currentStep gt 1 or newWizardBean.person ne null)}"
+                             styleClass="ui-button-raised"/>
+            <p:commandButton value="Opslaan"
+                             icon="pi pi-check"
+                             action="#{newWizardBean.opslaan}"
+                             update="@form"
+                             rendered="#{newWizardBean.currentStep eq 3}"
+                             styleClass="ui-button-raised ui-button-success"/>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+</html>
