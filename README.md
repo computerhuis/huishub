@@ -22,7 +22,7 @@ mvn clean package spring-boot:build-image
 Export image via podman:
 
 ```shell
-podman save -o computerhuis-portaal.tar org.codeberg.computerhuis:portaal:1.0.0-SNAPSHOT
+podman save -o computerhuis-portaal.tar com.github.computerhuis:portaal:1.0.0-SNAPSHOT
 docker save -o computerhuis-portaal.tar portaal:1.0.0-SNAPSHOT
 ```
 

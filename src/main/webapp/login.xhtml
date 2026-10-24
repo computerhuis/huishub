@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:metadata>
+    <f:event type="preRenderView" listener="#{loginBean.fetch()}"/>
+</f:metadata>
+<h:head>
+    <title>Login | Werkgroep Computerhuis Oost</title>
+    <h:outputStylesheet name="css/primeflex.min.css"/>
+    <h:outputScript name="locales/locale-nl.js" library="primefaces"/>
+    <h:outputStylesheet name="custom.css" library="css"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="#{resource['icons/apple-touch-icon.png']}"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="#{resource['icons/favicon-32x32.png']}"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="#{resource['icons/favicon-16x16.png']}"/>
+</h:head>
+<h:body style="background-color:#f5f5f5">
+
+    <div class="flex justify-content-center align-items-center" style="min-height:100vh;">
+        <h:form id="loginForm" prependId="false" styleClass="surface-card p-5 shadow-2 border-round w-full md:w-30rem">
+
+            <div class="text-center mb-5">
+                <p:graphicImage name="images/logo-ct.png" height="50"/>
+                <div class="text-900 text-3xl font-medium mb-3">Welkom bij Database Computerhuis Oost</div>
+                <span class="text-600 font-medium line-height-3">Login om verder te gaan</span>
+            </div>
+
+            <p:messages autoUpdate="true" styleClass="mb-3"/>
+
+            <div class="field mb-4">
+                <label for="username" class="block text-900 font-medium mb-2">Vrijwilliger</label>
+                <h:selectOneMenu id="username" required="true" styleClass="w-full" value="#{loginBean.username}">
+                    <f:selectItem itemLabel="" noSelectionOption="true" itemDisabled="true"/>
+                    <f:selectItems value="#{loginBean.volunteers}"
+                                   var="volunteer"
+                                   itemValue="#{volunteer.id}"
+                                   itemLabel="#{volunteer.fullname}"/>
+                </h:selectOneMenu>
+            </div>
+
+            <div class="field mb-4">
+                <label for="password" class="block text-900 font-medium mb-2">Wachtwoord</label>
+                <p:password id="password" required="true" styleClass="w-full" feedback="false"
+                            value="#{loginBean.password}"/>
+            </div>
+
+            <p:commandButton value="Login"
+                             ajax="false"
+                             icon="pi pi-sign-in"
+                             styleClass="w-full p-button-primary"
+                             type="submit"/>
+
+            <h:outputText value="#{param.error eq 'true' ? 'Ongeldige gebruikersnaam of wachtwoord' : ''}"
+                          style="color:red; display:block; text-align:center; margin-top:10px;"/>
+
+        </h:form>
+    </div>
+
+</h:body>
+</html>

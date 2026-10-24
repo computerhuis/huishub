@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="id" value="#{equipmentCrudBean.id}"/>
+    <f:event type="preRenderView" listener="#{equipmentCrudBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Apparatuur</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Apparatuur" outcome="/dataset/equipment/list"/>
+        <p:menuitem value="#{equipmentCrudBean.id != null ? equipmentCrudBean.id : 'Nieuw'}"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>Details van het apparaat</h1>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="donor" value="Donateur:" styleClass="col-12 mb-2 md:col-2 md:mb-0"
+                           rendered="#{equipmentCrudBean.donors != null}"/>
+            <div class="col-12 md:col-10">
+                <p:selectOneMenu id="donor" value="#{equipmentCrudBean.equipment.donorId}">
+                    <f:selectItem itemLabel=""
+                                  noSelectionOption="true"
+                                  itemDisabled="true"/>
+                    <f:selectItems value="#{equipmentCrudBean.donors}"
+                                   var="donor"
+                                   itemValue="#{donor.id}"
+                                   itemLabel="#{donor.name}"/>
+                </p:selectOneMenu>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="owner" value="Eigenaar:" styleClass="col-12 mb-2 md:col-2 md:mb-0"
+                           rendered="#{owner != null}"/>
+            <div class="col-12 md:col-10">
+                <p:link id="owner" outcome="/person/crud" value="#{owner.fullname}" rendered="#{owner != null}">
+                    <f:param name="id" value="#{owner.id}"/>
+                </p:link>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="id" value="Identificatie nummer:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="id" disabled="true" value="#{equipmentCrudBean.equipment.id}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="registered" value="Inschrijf datum:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="registered" disabled="true" value="#{equipmentCrudBean.equipment.registered}">
+                    <f:convertDateTime type="localDate"/>
+                </p:inputText>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel for="category" value="Categorie:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:selectOneMenu id="category" value="#{equipmentCrudBean.equipment.category}">
+                    <f:selectItem itemLabel=""
+                                  noSelectionOption="true"
+                                  itemDisabled="true"/>
+                    <f:selectItems value="#{equipmentCrudBean.equipmentCategories}"
+                                   var="cat"
+                                   itemValue="#{cat}"
+                                   itemLabel="#{cat.label}"/>
+                </p:selectOneMenu>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel for="status" value="Status:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:selectOneMenu id="status" value="#{equipmentCrudBean.equipment.status}">
+                    <f:selectItem itemLabel=""
+                                  noSelectionOption="true"
+                                  itemDisabled="true"/>
+                    <f:selectItems value="#{equipmentCrudBean.equipmentStatuses}"
+                                   var="cat"
+                                   itemValue="#{cat}"
+                                   itemLabel="#{cat.label}"/>
+                </p:selectOneMenu>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel for="manufacturer" value="Fabrikant:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="manufacturer" value="#{equipmentCrudBean.equipment.manufacturer}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="model" value="Model:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="model" value="#{equipmentCrudBean.equipment.model}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="serial_number" value="Serienummer:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="serial_number" value="#{equipmentCrudBean.equipment.serialNumber}"/>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel for="specification" value="Details:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:dataTable
+                    id="specification"
+                    var="entry"
+                    editable="true"
+                    value="#{equipmentCrudBean.specifications}">
+
+                    <p:ajax event="rowEdit" listener="#{equipmentCrudBean.updateSpecification}"
+                            update="specification :content:growl"/>
+
+                    <p:column headerText="Naam">
+                        <h:outputText value="#{entry.key}"/>
+                    </p:column>
+                    <p:column headerText="Waarde">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{equipmentCrudBean.equipment.specification[entry.key]}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{equipmentCrudBean.equipment.specification[entry.key]}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column>
+                        <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="pi pi-trash"
+                                         styleClass="ui-button-raised ui-button-outlined "
+                                         action="#{equipmentCrudBean.deleteSpecification(entry.key)}"
+                                         update="specification :content:growl">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <div class="grid ui-fluid">
+                    <div class="col-12 md:col-10"></div>
+                    <div class="col-12  mt-2 md:col-2">
+                        <p:commandButton value="Nieuwe detail toevoegen"
+                                         icon="pi pi-plus"
+                                         action="#{equipmentCrudBean.createSpecification}"
+                                         update="specification :content:growl"
+                                         styleClass="ui-button-success ui-button-raised"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="unregistered" value="Uitgeschreven datum:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:datePicker id="unregistered" value="#{equipmentCrudBean.equipment.unregistered}"
+                              showIcon="true"
+                              showOnFocus="false"/>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid mt-5">
+            <div class="col-4">
+                <p:commandButton type="reset" styleClass="ui-button-raised ui-button-outlined" value="Annuleren"/>
+            </div>
+            <div class="col-4">
+                <p:linkButton outcome="/dataset/equipment/history"
+                              styleClass="ui-button-outlined ui-button-raised ui-button-warning" value="geschiedenis">
+                    <f:param name="id" value="#{equipmentCrudBean.id}"/>
+                </p:linkButton>
+            </div>
+            <div class="col-4">
+                <p:commandButton type="submit" styleClass="ui-button-raised" value="Opslaan"
+                                 action="#{equipmentCrudBean.save}" update=":content:growl"/>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

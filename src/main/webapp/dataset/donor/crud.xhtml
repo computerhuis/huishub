@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="id" value="#{donorCrudBean.id}"/>
+    <f:event type="preRenderView" listener="#{donorCrudBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Donateurs</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Donateurs" outcome="/dataset/donor/list"/>
+        <p:menuitem value="#{donorCrudBean.id != null ? donorCrudBean.id : 'Nieuw'}"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>Donateur gegevens</h1>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="id" value="Identificatie nummer:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="id" disabled="true" value="#{donorCrudBean.donor.id}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="registered" value="Inschrijf datum:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="registered" disabled="true" value="#{donorCrudBean.donor.registered}">
+                    <f:convertDateTime type="localDate"/>
+                </p:inputText>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="name" value="Naam:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="name" value="#{donorCrudBean.donor.name}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="reporting" value="Rapportage:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:selectBooleanCheckbox id="reporting" value="#{donorCrudBean.donor.reporting}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="unregistered" value="Uitgeschreven datum:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:datePicker id="unregistered"
+                              value="#{donorCrudBean.donor.unregistered}"
+                              showIcon="true"
+                              showOnFocus="false"/>
+            </div>
+        </div>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="telephone" value="Telefoon:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="telephone" value="#{donorCrudBean.donor.telephone}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="telephone" value="Mobile:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="mobile" value="#{donorCrudBean.donor.mobile}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="email" value="Email:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="email" value="#{donorCrudBean.donor.email}"/>
+            </div>
+        </div>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="street" value="Straat:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="street" value="#{donorCrudBean.donor.street}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="house_number" value="Huisnummer:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="house_number" value="#{donorCrudBean.donor.houseNumber}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="house_number_addition" value="Huisnummer toevoeging:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="house_number_addition" value="#{donorCrudBean.donor.houseNumberAddition}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="postal_code" value="Postcode:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="postal_code" value="#{donorCrudBean.donor.postalCode}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="city" value="Woonplaats:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="city" value="#{donorCrudBean.donor.city}"/>
+            </div>
+        </div>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="comments" value="Opmerking:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputTextarea id="comments" value="#{donorCrudBean.donor.comments}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="equipmentList" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:linkButton id="equipmentList" outcome="/dataset/donor/equipment"
+                              styleClass="ui-button-outlined ui-button-raised" value="Apparatuurlijst">
+                    <f:param name="id" value="#{donorCrudBean.donor.id}"/>
+                </p:linkButton>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid mt-5">
+            <div class="col-1">
+            </div>
+            <div class="col-2">
+                <p:commandButton type="reset" styleClass="ui-button-raised ui-button-outlined "
+                                 value="Annuleren"/>
+            </div>
+            <div class="col-5">
+            </div>
+            <div class="col-2">
+                <p:commandButton type="submit" styleClass="ui-button-raised " value="Opslaan"
+                                 action="#{donorCrudBean.save}" update="growl"/>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{activityListBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Educatie</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home" outcome="/index"/>
+        <p:menuitem value="Educatie"/>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="grid ui-fluid mb-2">
+            <div class="col-11">
+                <h1>Activiteiten</h1>
+                Beheer de activiteiten en cursussen die binnen Educatie worden gegeven
+            </div>
+            <div class="col-1 flex align-items-end justify-content-end">
+                <p:linkButton outcome="/educatie/crud" icon="pi pi-plus"
+                              styleClass="rounded-button ui-button-outlined ui-button-raised">
+                </p:linkButton>
+            </div>
+        </div>
+
+        <p:dataTable
+            id="activityList"
+            var="activity"
+            value="#{activityListBean.list}"
+            rows="10"
+            paginator="true"
+            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+            paginatorPosition="bottom">
+
+            <p:column headerText="#" sortBy="#{activity.id}" sortOrder="asc">
+                <p:link outcome="/educatie/crud" value="#{activity.id}">
+                    <f:param name="id" value="#{activity.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Naam" sortBy="#{activity.name}">
+                <h:outputText value="#{activity.name}"/>
+            </p:column>
+            <p:column headerText="Rapportage">
+                <p:selectBooleanCheckbox disabled="true" value="#{activity.reporting}"/>
+            </p:column>
+            <p:column headerText="Vanaf">
+                <h:outputText value="#{activity.registered != null ? activity.registered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Tot">
+                <h:outputText value="#{activity.unregistered != null ? activity.unregistered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>
+</html>

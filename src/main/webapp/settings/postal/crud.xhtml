@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="code" value="#{postalCrudBean.code}"/>
+    <f:event type="preRenderView" listener="#{postalCrudBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Postcode</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Settings"/>
+        <p:menuitem value="Postcode" outcome="/settings/postal/list"/>
+        <p:menuitem value="#{postalCrudBean.code}"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>Details van postcode</h1>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="postal_code" value="Postcode:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="postal_code" disabled="true" value="#{postalCrudBean.postal.code}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="house_number_min" value="Huisnummer min:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="house_number_min" disabled="true" value="#{postalCrudBean.postal.houseNumberMin}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="house_number_max" value="Huisnummer max:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="house_number_max" disabled="true" value="#{postalCrudBean.postal.houseNumberMax}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="street" value="Straat:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="street" disabled="true" value="#{postalCrudBean.postal.street}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="neighbourhood" value="Buurt:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="neighbourhood" disabled="true" value="#{postalCrudBean.postal.neighbourhood}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="district" value="Wijk:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="district" disabled="true" value="#{postalCrudBean.postal.district}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="city" value="Stad:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="city" disabled="true" value="#{postalCrudBean.postal.city}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="municipality" value="Gemeente:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="municipality" disabled="true" value="#{postalCrudBean.postal.municipality}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="province" value="Provincie:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="province" disabled="true" value="#{postalCrudBean.postal.province}"/>
+            </div>
+        </div>
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="url" value="Website:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <h:outputLink id="url"
+                              value="#{postalCrudBean.postal.url}">#{postalCrudBean.postal.url}</h:outputLink>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
+</html>

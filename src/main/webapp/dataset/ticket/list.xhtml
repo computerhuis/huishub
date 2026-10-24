@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{ticketListBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Ticket</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Ticket"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:dataTable
+            id="ticketList"
+            var="ticket"
+            value="#{ticketListBean.list}"
+            rows="10"
+            paginator="true"
+            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+            paginatorPosition="bottom">
+
+            <p:column headerText="#" sortBy="#{ticket.id}" sortOrder="desc">
+                <p:link outcome="/dataset/ticket/crud" value="#{ticket.id}">
+                    <f:param name="id" value="#{ticket.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Type">
+                <h:outputText value="#{ticket.ticketTypeName}"/>
+            </p:column>
+            <p:column headerText="Categorie">
+                <h:outputText value="#{ticket.categoryName}"/>
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{ticket.statusName}"/>
+            </p:column>
+            <p:column headerText="Apparatuur">
+                <p:link outcome="/dataset/equipment/crud" value="#{ticket.equipmentId}">
+                    <f:param name="id" value="#{ticket.equipmentId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Binnnekomst datum">
+                <h:outputText value="#{ticket.registered != null ? ticket.registered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Teruggave datum">
+                <h:outputText value="#{ticket.unregistered != null ? ticket.unregistered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>
+</html>

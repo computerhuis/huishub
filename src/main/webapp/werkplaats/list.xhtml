@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:event type="preRenderView" listener="#{workshopBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Werkplaats</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Werkplaats"/>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="grid ui-fluid mb-2">
+            <div class="col-11">
+                <h1>Ticket in behandeling</h1>
+                Klik op de ticket die je wilt inzien of maak een andere keuze
+            </div>
+            <div class="col-1 flex align-items-end justify-content-end">
+                <p:linkButton outcome="/werkplaats/new" icon="pi pi-plus"
+                              styleClass="rounded-button ui-button-outlined ui-button-raised">
+                </p:linkButton>
+            </div>
+        </div>
+
+        <p:dataTable
+            id="ticketOverviewList"
+            var="ticketOverview"
+            rowIndexVar="rowIndex"
+            value="#{workshopBean.list}"
+            rows="15"
+            paginator="true"
+            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+            currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+            paginatorPosition="bottom">
+
+            <p:column headerText="#" sortBy="#{ticketOverview.id}" sortOrder="desc">
+                <p:link outcome="/dataset/ticket/crud" value="#{ticketOverview.id}">
+                    <f:param name="id" value="#{ticketOverview.id}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Apparaat">
+                <p:link outcome="/dataset/equipment/crud" value="#{ticketOverview.equipmentId}">
+                    <f:param name="id" value="#{ticketOverview.equipmentId}"/>
+                </p:link>
+            </p:column>
+            <p:column headerText="Datum inname">
+                <h:outputText value="#{ticketOverview.registered != null ? ticketOverview.registered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Type">
+                <h:outputText value="#{ticketOverview.ticketTypeName}"/>
+            </p:column>
+
+            <p:column headerText="Behandelaar">
+                <h:outputText value="#{ticketOverview.practitioner}"/>
+            </p:column>
+            <p:column headerText="Status">
+                <p:tag
+                    rounded="true"
+                    value="#{ticketOverview.statusName}"
+                    severity="#{ticketOverview.statusSeverity}"/>
+            </p:column>
+            <p:column headerText="Inname">
+                <h:outputText value="#{ticketOverview.registered != null ? ticketOverview.registered : ''}">
+                    <f:convertDateTime type="localDate"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Categorie">
+                <h:outputText value="#{ticketOverview.categoryName}"/>
+            </p:column>
+            <p:column headerText="Taak">
+                <h:outputText value="#{ticketOverview.subject}"/>
+            </p:column>
+            <p:column headerText="Logs">
+                <p:commandButton type="button"
+                                 icon="pi pi-receipt"
+                                 styleClass="ui-button-secondary ui-button-outlined ui-button-raised"
+                                 onclick="PF('contact-#{rowIndex}').show()"/>
+                <p:dialog header="Logs van ticket #{ticketOverview.id}"
+                          widgetVar="contact-#{rowIndex}"
+                          modal="true"
+                          closeOnEscape="true"
+                          minHeight="600"
+                          width="800"
+                          showEffect="fade"
+                          minimizable="true"
+                          maximizable="true">
+                    <ui:repeat value="#{workshopBean.getTicketLogs(ticketOverview.id)}" var="ticketLog">
+                        <h2><h:outputText
+                            value="#{ticketLog.date} - #{workshopBean.getVolunteer(ticketLog.volunteerId).fullname}"></h:outputText>
+                        </h2>
+                        <p>#{ticketLog.log}</p>
+                    </ui:repeat>
+                </p:dialog>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>
+</html>

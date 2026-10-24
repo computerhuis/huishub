@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+    <f:viewParam name="id" value="#{ticketCrudBean.id}"/>
+    <f:event type="preRenderView" listener="#{ticketCrudBean.fetch()}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/skeleton.xhtml">
+
+    <ui:define name="title">Ticket</ui:define>
+
+    <ui:define name="breadcrumb">
+        <p:menuitem value="Home"/>
+        <p:menuitem value="Ticket" outcome="/dataset/ticket/list"/>
+        <p:menuitem value="#{ticketCrudBean.id != null ? ticketCrudBean.id : 'Nieuw'}"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <h1>Ticket gegevens</h1>
+        <hr/>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel value="Apparatuur:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <p:outputLabel for="equipment_equipment_id" value="Identificatie nummer:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-8">
+                <p:link id="equipment_equipment_id" outcome="/dataset/equipment/crud"
+                        value="#{ticketCrudBean.equipment.id}">
+                    <f:param name="id" value="#{ticketCrudBean.equipment.id}"/>
+                </p:link>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel value="" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <p:outputLabel for="equipment_category" value="Categorie:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-8">
+                <p:inputText id="equipment_category" disabled="true" value="#{ticketCrudBean.equipment.categoryName}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel value="" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <p:outputLabel for="equipment_manufacturer" value="Fabrikant:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-8">
+                <p:inputText id="equipment_manufacturer" disabled="true"
+                             value="#{ticketCrudBean.equipment.manufacturer}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel value="" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <p:outputLabel for="equipment_model" value="Model:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-8">
+                <p:inputText id="equipment_model" disabled="true" value="#{ticketCrudBean.equipment.model}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel value="" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <p:outputLabel for="equipment_status" value="Status:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-8">
+                <p:inputText id="equipment_status" disabled="true" value="#{ticketCrudBean.equipment.statusName}"/>
+            </div>
+        </div>
+
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="id" value="Identificatie nummer:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="id" disabled="true" value="#{ticketCrudBean.ticket.id}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="registered" value="Inschrijf datum:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="registered" disabled="true" value="#{ticketCrudBean.ticket.registered}">
+                    <f:convertDateTime type="localDate"/>
+                </p:inputText>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="type" value="Type:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:selectOneMenu id="type" value="#{ticketCrudBean.ticket.ticketType}">
+                    <f:selectItem itemLabel=""
+                                  noSelectionOption="true"
+                                  itemDisabled="true"/>
+                    <f:selectItems value="#{ticketCrudBean.ticketTypes}"
+                                   var="cat"
+                                   itemValue="#{cat}"
+                                   itemLabel="#{cat.label}"/>
+                </p:selectOneMenu>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="subject" value="Onderwerp:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputText id="subject" value="#{ticketCrudBean.ticket.subject}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="description" value="Omschrijving:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:inputTextarea id="description" rows="6" value="#{ticketCrudBean.ticket.description}"/>
+            </div>
+        </div>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="unregistered" value="Uitgeschreven datum:"
+                           styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:datePicker id="unregistered" value="#{ticketCrudBean.ticket.unregistered}"
+                              showIcon="true"
+                              showOnFocus="false"/>
+            </div>
+        </div>
+
+        <hr/>
+        <div class="grid ui-fluid">
+            <p:outputLabel for="details" value="Details:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:dataTable
+                    id="details"
+                    var="entry"
+                    editable="true"
+                    value="#{ticketCrudBean.details}">
+
+                    <p:ajax event="rowEdit" listener="#{ticketCrudBean.updateDetail}"
+                            update="details :content:growl"/>
+
+                    <p:column headerText="Naam">
+                        <h:outputText value="#{entry.key}"/>
+                    </p:column>
+                    <p:column headerText="Waarde">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{ticketCrudBean.ticket.details[entry.key]}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{ticketCrudBean.ticket.details[entry.key]}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column>
+                        <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="pi pi-trash"
+                                         styleClass="ui-button-raised ui-button-outlined"
+                                         action="#{ticketCrudBean.deleteDetail(entry.key)}"
+                                         update="details :content:growl">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <div class="grid ui-fluid">
+                    <div class="col-12 md:col-10"></div>
+                    <div class="col-12  mt-2 md:col-2">
+                        <p:commandButton value="Nieuwe detail toevoegen"
+                                         icon="pi pi-plus"
+                                         action="#{ticketCrudBean.createDetail}"
+                                         update="details :content:growl"
+                                         styleClass="ui-button-success ui-button-raised"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid ui-fluid mt-5">
+            <div class="col-2">
+            </div>
+            <div class="col-2">
+                <p:commandButton type="reset" styleClass="ui-button-raised ui-button-outlined "
+                                 value="Annuleren"/>
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-2">
+                <p:commandButton type="button" styleClass="ui-button-raised" value="Voeg log toe"
+                                 onclick="PF('dlg2').show()"/>
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-3">
+                <p:commandButton type="submit" styleClass="ui-button-raised" value="Opslaan"
+                                 action="#{ticketCrudBean.save}" update=":content:growl"/>
+            </div>
+        </div>
+
+        <hr class="mt-5"/>
+
+        <div class="grid ui-fluid">
+            <p:outputLabel value="Logs:" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+            <div class="col-12 md:col-10">
+                <p:dataTable
+                    id="logs"
+                    var="ticketLog"
+                    value="#{ticketCrudBean.ticketLogs}"
+                    rows="10"
+                    paginator="true"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords}"
+                    paginatorPosition="bottom">
+
+                    <p:column headerText="Datum" styleClass="valign-top">
+                        <h:outputText value="#{ticketLog.date}">
+                            <f:convertDateTime type="localDateTime"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Door" styleClass="valign-top">
+                        <p:link id="equipment_equipment_id" outcome="/dataset/person/crud"
+                                value="#{ticketLog.fullname}">
+                            <f:param name="id" value="#{ticketLog.volunteerId}"/>
+                        </p:link>
+                    </p:column>
+                    <p:column headerText="Log" styleClass="valign-top">
+                        <h:outputText escape="false" value="#{ticketLog.log}"/>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog id="logDialog" header="Voeg een nieuwe log toe" widgetVar="dlg2" width="1200"
+                          showEffect="fade" modal="true"
+                          closeOnEscape="true">
+                    <p:textEditor widgetVar="newLogEditor"
+                                  value="${ticketCrudBean.newLog}"
+                                  height="500px"
+                                  styleClass="mb-5">
+                        <f:facet name="toolbar">
+                            <span class="ql-formats">
+                                <select class="ql-font"></select>
+                                <select class="ql-size"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-script" value="sub"></button>
+                                <button class="ql-script" value="super"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-header" value="1"></button>
+                                <button class="ql-header" value="2"></button>
+                                <button class="ql-header" value="3"></button>
+                                <button class="ql-header" value="4"></button>
+                                <button class="ql-blockquote"></button>
+                                <button class="ql-code-block"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-indent" value="-1"></button>
+                                <button class="ql-indent" value="+1"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-direction" value="rtl"></button>
+                                <select class="ql-align"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-clean"></button>
+                            </span>
+                        </f:facet>
+                    </p:textEditor>
+
+                    <p:commandButton value="Opslaan" type="submit"
+                                     styleClass="ui-button-raised"
+                                     action="#{ticketCrudBean.createLog}"
+                                     update="logDialog :content:logs :content:growl"
+                                     oncomplete="PF('dlg2').hide();"/>
+                </p:dialog>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
+</html>
